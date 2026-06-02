@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>gesdemifar</title>
+    <link rel="stylesheet" href="./style.css">
+
+  </head>
+    
+  <body>
+  <div class="noise"></div>
+<div class="blob blob-one"></div>
+<div class="blob blob-two"></div>
+
+<!-- PANTALLA DE LOGIN -->
+<section id="loginView" class="login-container">
+  <div class="login-card">
+    <div class="brand-mark large">DEMIFAR</div>
+    <p class="tagline">Sistema Integral de Gestion Farmaceutica</p>
+    <form id="loginForm">
+      <label>Usuario</label>
+      <input type="text" id="username" placeholder="admin o mauricio" required autocomplete="off">
+      <label>Contrasena</label>
+      <input type="password" id="password" placeholder="123" required autocomplete="off">
+      <button type="submit" class="primary-btn">Iniciar Sesion</button>
+    </form>
+    <p class="login-hint">Prueba: <strong>admin</strong> / <strong>123</strong> o <strong>mauricio</strong> / <strong>123</strong></p>
+  </div>
+</section>
+
+<!-- APLICACION PRINCIPAL -->
+<div id="appView" class="app-container hidden">
+  <header class="topbar">
+    <div class="brand-mark">DEMIFAR</div>
+    <div class="user-info">
+      <span id="userNameDisplay">Usuario</span>
+      <span id="userRoleDisplay" class="role-badge">ROL</span>
+      <button id="logoutBtn" class="small-btn">Salir</button>
+    </div>
+  </header>
+
+  <div class="main-layout">
+    <nav class="sidebar">
+      <button class="nav-btn active" data-view="ventas">Nueva Venta</button>
+      <button class="nav-btn" data-view="productos">Productos</button>
+      <button class="nav-btn" data-view="inventario">Inventario</button>
+      <button class="nav-btn admin-only" data-view="reportes">Reportes</button>
+      <button class="nav-btn admin-only" data-view="usuarios">Usuarios</button>
+    </nav>
+
+    <main class="content">
+      <!-- VISTA: VENTAS -->
+      <section id="view-ventas" class="view active">
+        <div class="view-header">
+          <h2>Nueva Venta</h2>
+          <div class="filters">
+            <button class="filter active" data-filter="all">Todos</button>
+            <button class="filter" data-filter="medicamentos">Medicamentos</button>
+            <button class="filter" data-filter="higiene">Higiene</button>
+            <button class="filter" data-filter="suplementos">Suplementos</button>
+          </div>
+        </div>
+        <div class="shop-grid" id="productsGrid"></div>
+      </section>
+
+      <!-- VISTA: PRODUCTOS -->
+      <section id="view-productos" class="view hidden">
+        <div class="view-header">
+          <h2>Gestion de Productos</h2>
+          <button class="primary-btn admin-only" id="btnNewProduct">+ Nuevo Producto</button>
+        </div>
+        <div class="table-container">
+          <table class="data-table">
+            <thead><tr><th>ID</th><th>Nombre</th><th>Categoria</th><th>Precio</th><th>Stock</th><th class="admin-only">Acciones</th></tr></thead>
+            <tbody id="productosTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- VISTA: INVENTARIO -->
+      <section id="view-inventario" class="view hidden">
+        <div class="view-header">
+          <h2>Control de Inventario y Vencimientos</h2>
+        </div>
+        <div class="table-container">
+          <table class="data-table">
+            <thead><tr><th>Producto</th><th>Stock Actual</th><th>Estado</th><th>Vencimiento</th><th class="admin-only">Acciones</th></tr></thead>
+            <tbody id="inventarioTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- VISTA: REPORTES -->
+      <section id="view-reportes" class="view hidden">
+        <div class="view-header">
+          <h2>Reportes y Estadisticas</h2>
+        </div>
+        <div class="stats-grid">
+          <div class="stat-card"><h3>Ventas Hoy</h3><p class="stat-value" id="statVentas">Bs. 0.00</p></div>
+          <div class="stat-card"><h3>Productos Criticos</h3><p class="stat-value danger" id="statCriticos">0</p></div>
+          <div class="stat-card"><h3>Total Productos</h3><p class="stat-value" id="statProductos">0</p></div>
+          <div class="stat-card"><h3>Valor Inventario</h3><p class="stat-value success" id="statValor">Bs. 0.00</p></div>
+        </div>
+      </section>
+
+      <!-- VISTA: USUARIOS -->
+      <section id="view-usuarios" class="view hidden">
+        <div class="view-header">
+          <h2>Gestion de Usuarios</h2>
+          <button class="primary-btn" id="btnNewUser">+ Nuevo Usuario</button>
+        </div>
+        <div class="table-container">
+          <table class="data-table">
+            <thead><tr><th>Nombre</th><th>Usuario</th><th>Rol</th><th>Estado</th><th>Acciones</th></tr></thead>
+            <tbody id="usuariosTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- CARRITO LATERAL -->
+<aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
+  <div class="cart-panel">
+    <div class="cart-head">
+      <div>
+        <p class="eyebrow">Ticket actual</p>
+        <h2>Carrito de Venta</h2>
+      </div>
+      <button class="close-cart" type="button" aria-label="Cerrar carrito">x</button>
+    </div>
+    <div id="cartItems" class="cart-items">
+      <p class="empty-cart">No hay productos en la venta.</p>
+    </div>
+    <div class="cart-total">
+      <span>Total a Cobrar</span>
+      <strong id="cartTotal">Bs. 0.00</strong>
+    </div>
+    <button class="checkout-button" type="button" id="checkoutBtn">Finalizar Venta</button>
+  </div>
+</aside>
+
+<button class="floating-cart-btn" id="floatingCartBtn">
+  <span class="cart-icon-text">CV</span>
+  <span id="cartCount">0</span>
+</button>
+
+<!-- MODAL GENÉRICO -->
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modal-panel">
+    <div class="modal-head">
+      <h2 id="modalTitle">Titulo</h2>
+      <button class="close-cart" type="button" id="modalClose">x</button>
+    </div>
+    <div id="modalBody" class="modal-body"></div>
+    <div id="modalFooter" class="modal-footer"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Accion completada</div>
+    <script  src="./script.js"></script>
+
+  </body>
+  
+</html>
